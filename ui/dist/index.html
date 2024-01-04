@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Nstream Railroad</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css">
+    <style>
+      html, body {
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+  </head>
+  <body swim-theme="dark">
+    <script src="swim-runtime.js"></script>
+    <script src="swim-toolkit.js"></script>
+    <script src="swim-platform.js"></script>
+    <script src="nstream-railroad.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js"></script>
+    <script>
+
+if (navigator.standalone) {
+  document.documentElement.style.width = "100vw";
+  document.documentElement.style.height = "100vh";
+} else {
+  document.documentElement.style.width = "100%";
+  document.documentElement.style.height = "100%";
+}
+document.body.style.position = "fixed";
+document.body.style.margin = "0";
+document.body.style.overflow = "hidden";
+if (navigator.standalone) {
+  document.body.style.width = "100vw";
+  document.body.style.height = "100vh";
+} else {
+  document.body.style.width = "100%";
+  document.body.style.height = "100%";
+}
+
+mapboxgl.accessToken = "pk.eyJ1Ijoic3dpbWl0IiwiYSI6ImNqY2c3NXZkYzFoa2QycXQ1eXl1Mnd6M3EifQ.qpRE7xC08AyZfxJ56LoN7w";
+
+swim.PrismService.insertPlugin(new swim.FabricPlugin());
+swim.PrismService.insertPlugin(new swim.CatalogPlugin());
+swim.PrismService.insertPlugin(new swim.AtlasPlugin());
+swim.PrismService.insertPlugin(new swim.InventoryPlugin());
+
+const sessionModel = new swim.SessionModel();
+sessionModel.mount();
+const shellController = new swim.ShellController();
+shellController.root.setView(document.body);
+shellController.session.setModel(sessionModel);
+shellController.mount();
+
+const query = window.location.search;
+const urlParams = new URLSearchParams(query);
+const baseUri = swim.Uri.parse(document.location.href);
+const host = baseUri.base().withScheme(baseUri.schemeName === "https" ? "warps" : "warp").toString();
+
+shellController.addDomain(host);
+
+    </script>
+  </body>
+</html>

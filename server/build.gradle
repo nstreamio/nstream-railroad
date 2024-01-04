@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'application'
+
+group = 'swim'
+description = 'Nstream Railroad App'
+version = project.property('application.version')
+mainClassName = 'io.nstream.railroad.AppPlane'
+ext.swimVersion = project.property('swim.version')
+ext.nstreamVersion = project.property('nstream.version')
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation group: 'org.swimos', name: 'swim-server', version: swimVersion
+  implementation group: 'org.swimos', name:'swim-csv', version: swimVersion
+  implementation group: 'org.swimos', name:'swim-meta', version: swimVersion
+  api group: 'io.nstream', name: 'nstream-adapter-common', version: nstreamVersion
+  api group: 'io.nstream', name: 'nstream-adapter-geo', version: nstreamVersion
+  api group: 'io.nstream', name: 'nstream-adapter-csv', version: nstreamVersion
+}
+
+def compileUi = tasks.register("compileUi") {
+  exec {
+    workingDir('..')
+    executable './buildUi.sh'
+  }
+}
+check.dependsOn compileUi
+run.dependsOn compileUi

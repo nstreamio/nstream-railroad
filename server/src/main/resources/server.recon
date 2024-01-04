@@ -1,0 +1,88 @@
+@kernel(class: "swim.meta.MetaKernel")
+@kernel(class: "swim.service.web.UiRouter")
+
+@web(port: 9001) {
+  space: "nstream-railroad"
+  @websocket {
+      serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+      clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+  }
+}
+
+nstream-railroad: @fabric {
+  @plane(class: "io.nstream.railroad.AppPlane")
+
+  @node {
+    pattern: "/yard/:id"
+    @agent(class: "io.nstream.railroad.agent.YardAgent")
+    @agent(class: "nstream.adapter.common.patches.GroupPatch")
+  }
+
+  @node {
+    pattern: "/rcl/:id"
+    @agent(class: "io.nstream.railroad.agent.LocomotiveAgent")
+    @agent(class: "io.nstream.railroad.agent.RcuAgent")
+    @agent(class: "io.nstream.railroad.agent.RclAgent")
+    @agent(class: "io.nstream.railroad.agent.DataSimAgent")
+    @agent(class: "nstream.adapter.common.patches.MemberPatch") {
+      groupUriPattern: "/yard/:id"  # URI pattern of the group
+      extractGroup: $yardId         # Selector to extract the 'yardId' from an event
+      memberLane: status
+    }
+    @agent(class: "nstream.adapter.geo.GeoPointPatch") {
+      extractLongitude:$lon  # Use the column value to be extracted by prefixing the name of the column with a $, i.e $lon
+      extractLatitude:$lat   # Use the column value to be extracted by prefixing the name of the column with a $, i.e $lat
+    }
+  }
+
+  @node {
+    pattern: "/map/:tile"
+    @agent(class: "nstream.adapter.geo.MapTilePatch")
+  }
+
+  @node {
+    pattern: "/csv/rcls"
+    @agent(class: "nstream.adapter.csv.CsvIngestingPatch") {
+      csvIngressConf: @csvIngressSettings {
+        resource: "data/rcls.csv"
+        delimiter: ','
+
+        # iterate over the # lines read in the poll and extract the "id" value
+        # and construct an agent uri of the form /locomotive/{id}
+        relaySchema: @foreach {
+          @command {
+            nodeUri: [/rcl/{$id}]
+            laneUri: addEvent
+          }
+        }
+
+        firstFetchDelayMillis: 5000 # optional
+        playback: false # will playback from the beginning when the last line of the file is read
+      }
+    }
+  }
+
+  @node {
+    pattern: "/csv/yards"
+    @agent(class: "nstream.adapter.csv.CsvIngestingPatch") {
+      csvIngressConf: @csvIngressSettings {
+        resource: "data/yards.csv"
+        delimiter: ','
+
+        # iterate over the # lines read in the poll and extract the "id" value
+        # and construct an agent uri of the form /rcu/{id}
+        relaySchema: @foreach {
+          @command {
+            nodeUri: [/yard/{$id}]
+            laneUri: info
+          }
+        }
+
+        firstFetchDelayMillis: 3000 # optional
+        playback: false # will playback from the beginning when the last line of the file is read
+      }
+    }
+  }
+
+}
+

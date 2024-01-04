@@ -1,0 +1,8 @@
+.idea
+.gradle
+.vscode
+build
+out
+dist/nstream-railroad*
+server/src/main/resources/ui
+bin/

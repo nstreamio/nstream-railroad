@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/nstream-railroad/index.ts"],"names":[],"mappings":"AAAA,cAAc,QAAQ,CAAC;AACvB,cAAc,OAAO,CAAC;AACtB,cAAc,QAAQ,CAAC;AAEvB,OAAO,EAAE,qBAAqB,EAAE,MAAM,yBAAyB,CAAC;AAEhE,OAAO,EAAE,YAAY,EAAE,MAAM,gBAAgB,CAAC;AAC9C,OAAO,EAAE,qBAAqB,EAAE,MAAM,yBAAyB,CAAA;AAC/D,YAAY,CAAC,YAAY,CAAC,IAAI,qBAAqB,EAAE,CAAC,CAAC"}

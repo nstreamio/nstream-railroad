@@ -1,0 +1,7 @@
+id,locId,hrcuId,lrcuId,yardId,systemName,systemType,rclVersion,installDate,hrcuLat,hcruLon,locationFile,simIdle,simDisconnect
+rcl1,loc1,hrcu1,1rcu1,yardA,sysA,sysTypeA,1.0,2022-02-02,37.44558392436468,-122.1649115821403,data/rail1.csv,false,false
+rcl2,loc2,hrcu2,lrcu2,yardA,sysB,sysTypeB,1.0,2022-03-03,37.44558392436468,-122.1649115821403,data/rail1.csv,true,false
+rcl3,loc3,hrcu3,lrcu3,yardA,sysC,sysTypeC,1.3,2022-04-04,37.450629059074785,-122.1594681442676,data/rail2.csv,false,false
+rcl4,loc4,hrcu4,1rcu4,yardA,sysA,sysTypeA,1.0,2022-02-02,37.450629059074785,-122.1594681442676,data/rail2.csv,true,true
+rcl5,loc5,hrcu5,lrcu5,yardA,sysB,sysTypeB,1.0,2022-03-03,37.44571278272489,-122.16230222780494,data/rail3.csv,false,false
+rcl6,loc6,hrcu6,lrcu6,yardA,sysC,sysTypeC,1.3,2022-04-04,37.44571278272489,-122.16230222780494,data/rail3.csv,false,false

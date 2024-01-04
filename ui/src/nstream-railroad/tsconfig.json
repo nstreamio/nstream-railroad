@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig-main",
+  "include": ["**/*"],
+  "compilerOptions": {
+    "outDir": "../../lib/nstream-railroad",
+    "tsBuildInfoFile": "../../lib/nstream-railroad/.tsbuildinfo"
+  }
+}
