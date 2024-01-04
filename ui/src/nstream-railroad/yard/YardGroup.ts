@@ -1,10 +1,13 @@
-import { MapDownlinkFastener, Value } from "@swim/runtime";
+import { GeoBox, MapDownlinkFastener, Value } from "@swim/runtime";
 import { Model } from "@swim/toolkit";
-import { EntityTrait, NodeGroup } from "@swim/platform";
+import { DistrictTrait, EntityTrait, NodeGroup } from "@swim/platform";
+import { RailGroup } from "./RailGroup";
 import { YardLocation } from "./YardLocation";
 import { YardWidgets } from "./YardWidgets";
 
 const MAX_YARD_ZOOM = 7;
+const MIN_RAIL_ZOOM = 10;
+const MAX_RAIL_ZOOM = 18;
 
 export class YardGroup extends NodeGroup {
 
@@ -17,6 +20,21 @@ export class YardGroup extends NodeGroup {
 
     const widgetGroup = new YardWidgets();
     entityTrait.setTrait("widgets", widgetGroup);
+
+    const RailModel = this.createNodeModel("/Rail");
+
+    const railEntityTrait = RailModel.getTrait(EntityTrait)!;
+    const districtTrait = new DistrictTrait();
+    districtTrait.setZoomRange(MIN_RAIL_ZOOM, MAX_RAIL_ZOOM);
+    districtTrait.setBoundary(GeoBox.globe());
+    RailModel.setTrait("district", districtTrait);
+
+    const subdistricts = new RailGroup(entityTrait.uri);
+    RailModel.setChild("subdistricts", subdistricts);
+    (railEntityTrait.subentities.binds as any) = false;
+    railEntityTrait.subentities.setModel(subdistricts);
+    this.appendChild(RailModel, "/Rail");    
+
   }
 
   updateNodeModel(nodeModel: Model, value: Value) {

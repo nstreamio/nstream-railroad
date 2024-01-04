@@ -84,5 +84,26 @@ nstream-railroad: @fabric {
     }
   }
 
+  @node {
+    pattern: "/csv/yard-rails"
+    @agent(class: "nstream.adapter.csv.CsvIngestingPatch") {
+      csvIngressConf: @csvIngressSettings {
+        resource: "data/rails.csv"
+        delimiter: ','
+
+        # iterate over the # lines read in the poll and extract the "id" value
+        # and construct an agent uri of the form /rcu/{id}
+        relaySchema: @foreach {
+          @command {
+            nodeUri: [/yard/{$yardId}]
+            laneUri: addRail
+          }
+        }
+
+        firstFetchDelayMillis: 10000 # optional
+        playback: false
+      }
+    }
+  }
 }
 
