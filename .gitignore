@@ -6,3 +6,4 @@ out
 dist/nstream-railroad*
 server/src/main/resources/ui
 bin/
+ui/lib
