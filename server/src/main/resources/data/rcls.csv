@@ -8,3 +8,10 @@ rcl6,loc6,hrcu6,lrcu6,yardA,sysC,sysTypeC,1.3,2022-04-04,37.44571278272489,-122.
 rcl7,loc7,hrcu7,lrcu7,yardB,sysA,sysTypeA,1.0,2022-02-02,37.80979432,-122.269047,data/oakland.csv,false,false
 rcl8,loc8,hrcu8,lrcu8,yardB,sysB,sysTypeB,1.0,2022-03-03,37.80979432,-122.269047,data/oakland.csv,false,false
 rcl9,loc9,hrcu9,lrcu9,yardB,sysC,sysTypeC,1.3,2022-03-03,37.80979432,-122.269047,data/oakland.csv,false,false
+rcl10,loc10,hcru10,lrcu10,yardB,sysA,sysTypeA,1.0,2024-01-18,XXX,YYY,data/oakland_6337352.csv,false,false
+rcl11,loc11,hcru11,lrcu11,yardB,sysB,sysTypeB,1.0,2024-01-18,XXX,YYY,data/oakland_34528635.csv,false,false
+rcl12,loc12,hcru12,lrcu12,yardB,sysC,sysTypeC,1.3,2024-01-18,XXX,YYY,data/oakland_35675172.csv,false,false
+rcl13,loc13,hcru13,lrcu13,yardB,sysA,sysTypeA,1.0,2024-01-18,XXX,YYY,data/oakland_35675388.csv,false,false
+rcl14,loc14,hcru14,lrcu14,yardB,sysB,sysTypeB,1.0,2024-01-18,XXX,YYY,data/oakland_293624092.csv,false,false
+rcl15,loc15,hcru15,lrcu15,yardB,sysC,sysTypeC,1.3,2024-01-18,XXX,YYY,data/oakland_610651498.csv,false,false
+rcl16,loc16,hcru16,lrcu16,yardB,sysA,sysTypeA,1.0,2024-01-18,XXX,YYY,data/oakland_671694909.csv,false,false
