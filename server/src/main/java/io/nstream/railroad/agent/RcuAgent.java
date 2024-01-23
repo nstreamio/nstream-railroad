@@ -5,7 +5,7 @@ import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
 import swim.structure.Value;
 
-public class   RcuAgent extends AbstractAgent  {
+public class RcuAgent extends AbstractAgent  {
 
   @SwimLane("rcuMetrics")
   ValueLane<Value> rcuMetrics = valueLane();
