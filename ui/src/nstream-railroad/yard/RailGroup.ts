@@ -1,10 +1,10 @@
-import { Uri, MapDownlinkFastener, Value } from "@swim/runtime";
+import { GeoPoint, Uri, MapDownlinkFastener, Value } from "@swim/runtime";
 import { Model, Trait, TraitRef } from "@swim/toolkit";
 import { EntityTrait, NodeGroup } from "@swim/platform";
 import { RailLocation } from "./RailLocation";
 
 const MIN_RAIL_ZOOM = 10;
-const MAX_RAIL_ZOOM = 18;
+const MAX_RAIL_ZOOM = 30;
 
 export class RailGroup extends NodeGroup {
   
@@ -23,16 +23,19 @@ export class RailGroup extends NodeGroup {
 
   updateNodeModel(nodeModel: Model, value: Value) {
     const entityTrait = nodeModel.getTrait(EntityTrait)!;
-
-    const lng1 = value.get("lng1").numberValue(NaN);
-    const lat1 = value.get("lat1").numberValue(NaN);
-    const lng2 = value.get("lng2").numberValue(NaN);
-    const lat2 = value.get("lat2").numberValue(NaN);
-    if (isFinite(lng1) && isFinite(lat1) && isFinite(lng2) && isFinite(lat2)) {
-      const railTrait = new RailLocation(lng1, lat1, lng2, lat2);
-      railTrait.setZoomRange(MIN_RAIL_ZOOM, MAX_RAIL_ZOOM);
-      nodeModel.setTrait("railLocation", railTrait);
+    const coordinates = value.get("coordinates").stringValue("").split(",");
+    const geoPoints: GeoPoint[] = [];
+    for (var i = 0; i < coordinates.length; i += 2) {
+      const lng = parseFloat(coordinates[i + 1] as string);
+      const lat = parseFloat(coordinates[i] as string);
+      if (isFinite(lng) && isFinite(lat)) {
+        geoPoints.push(new GeoPoint(lng, lat));
+      }
     }
+
+    const railTrait = new RailLocation(geoPoints);
+    railTrait.setZoomRange(MIN_RAIL_ZOOM, MAX_RAIL_ZOOM);
+    nodeModel.setTrait("railLocation", railTrait);
   }
 
   @MapDownlinkFastener<RailGroup, Value, Value>({
