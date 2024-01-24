@@ -14,7 +14,8 @@ export class RailLocation extends LocationTrait {
     //const newLocal = latLngs as AnyGeoPath;
     const geographic = GeographicLine.fromInit({
       geometry: GeoPath.fromPoints(geoPoints),
-      stroke: "rgb(100, 100, 100)",
+      // Subdued green / olive
+      stroke: "rgb(85, 107, 47)",
       strokeWidth: RAIL_LINE_WIDTH
     });
     this.setGeographic(geographic);

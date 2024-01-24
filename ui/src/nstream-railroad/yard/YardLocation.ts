@@ -26,6 +26,8 @@ export class YardLocation extends LocationTrait {
           width: YARD_ICON_SIZE,
           height: YARD_ICON_SIZE,
           graphics: YARD_ICON,
+          // Yellow
+          fill: "rgb(255, 255, 0)",
         });
         this.owner.setGeographic(geographic);
       } else {
