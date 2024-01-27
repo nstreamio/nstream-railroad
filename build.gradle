@@ -1,6 +1,9 @@
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'application'
+plugins {
+  id "java"
+  id "java-library"
+  id "application"
+  id 'com.google.cloud.tools.jib' version '3.3.1'
+}
 
 group = 'swim'
 description = 'Nstream Railroad App'
@@ -29,3 +32,31 @@ def compileUi = tasks.register("compileUi") {
 }
 
 run.dependsOn compileUi
+
+jib {
+  from {
+    image = "openjdk:11"
+  }
+  to {
+    image = "nstream/demo-railroad:${version}"
+    auth {
+      username = "$System.env.REGISTRY_USERNAME"
+      password = "$System.env.REGISTRY_PASSWORD"
+    }
+  }
+  container {
+    mainClass = mainClassName
+    ports = ['9001/tcp']
+    jvmFlags = ['-Dswim.config=/config/server.recon']
+  }
+  extraDirectories {
+    paths {
+      path {
+        // copies a single-file.xml
+        from = 'src/main/resources'
+        into = '/config'
+        includes = ['*.recon']
+      }
+    }
+  }
+}
