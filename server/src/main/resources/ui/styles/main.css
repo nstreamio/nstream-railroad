@@ -1,0 +1,190 @@
+*,*::before,*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+html,body {
+    width: 100%;
+    height: 100%
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    color: #fff;
+    background: #4A4A4A;
+    overflow: hidden
+}
+
+.prism-line {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #44D7B6
+}
+
+.overlay-login {
+    position: fixed;
+    z-index: 11;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a
+}
+
+.overlay-login.hide {
+    display: none
+}
+
+.overlay-login .backdrop {
+    position: absolute;
+    z-index: 0;
+    top: 2rem;
+    left: 2rem;
+    width: 100%;
+    height: 100%
+}
+
+.overlay-login .content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    height: 100%
+}
+
+.overlay-login .wrap {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center
+}
+
+.overlay-login .wrap .box {
+    max-width: 350px;
+    width: 100%;
+    margin-top: 3rem;
+    margin-bottom: 3rem
+}
+
+.overlay-login .msg-error {
+    color: #44D7B6;
+    opacity: 0
+}
+
+.overlay-login form {
+    position: relative
+}
+
+.overlay-login form input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #44D7B6;
+    padding: 0.5rem 2rem 0.5rem 0.25rem;
+    background: transparent
+}
+
+.overlay-login form input:focus,.overlay-login form input:focus-within,.overlay-login form input:-internal-autofill-selected {
+    color: white !important;
+    background: transparent !important
+}
+
+.overlay-login form input::placeholder {
+    color: #ccc;
+    opacity: 1
+}
+
+.overlay-login form input:-ms-input-placeholder {
+    color: #ccc
+}
+
+.overlay-login form input::-ms-input-placeholder {
+    color: #ccc
+}
+
+.overlay-login form .btn-submit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: 0;
+    padding-right: 0;
+    color: #44D7B6
+}
+
+.overlay-login form .btn-submit i {
+    margin-top: 8px
+}
+
+.overlay-login .forgot {
+    font-size: 12px;
+    color: #9B9B9B
+}
+
+.overlay-login .footer {
+    font-size: 14px;
+    color: #9B9B9B;
+    text-align: right;
+    padding: 0.25rem 1rem
+}
+
+.overlay-login a,.overlay-login a:visited {
+    font-weight: normal;
+    color: #aaa
+}
+
+.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2
+}
+
+.h1,h1 {
+    font-size: 2.5rem
+}
+
+.h2,h2 {
+    font-size: 2rem
+}
+
+.h3,h3 {
+    font-size: 1.75rem
+}
+
+.h4,h4 {
+    font-size: 1.5rem
+}
+
+.h5,h5 {
+    font-size: 1.25rem
+}
+
+.h6,h6 {
+    font-size: 1rem
+}
+.mt-1,.my-1 {
+    margin-top: 0.25rem !important
+}
+.mt-5,.my-5 {
+    margin-top: 3rem !important
+}
+.mb-5,.my-5 {
+    margin-bottom: 3rem !important
+}
+.text-left {
+    text-align: left !important
+}
+
+.text-right {
+    text-align: right !important
+}
+
+.text-center {
+    text-align: center !important
+}
