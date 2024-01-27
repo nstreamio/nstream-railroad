@@ -24,7 +24,6 @@ dependencies {
 
 def compileUi = tasks.register("compileUi") {
   exec {
-    workingDir('..')
     executable './buildUi.sh'
   }
 }
