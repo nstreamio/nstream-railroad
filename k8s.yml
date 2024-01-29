@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: demo-transit
-  namespace: demo-transit
+  name: demo-railroad
+  namespace: demo-railroad
 spec:
   replicas: 1
   selector:
     matchLabels:
-      demo: transit
+      demo: railroad
   serviceName: demo
   template:
     metadata:
       labels:
-        demo: transit
+        demo: railroad
     spec:
       containers:
         - image: DOCKER_IMAGE
