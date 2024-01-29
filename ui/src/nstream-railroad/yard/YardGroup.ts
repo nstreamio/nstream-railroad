@@ -5,7 +5,9 @@ import { RailGroup } from "./RailGroup";
 import { YardLocation } from "./YardLocation";
 import { YardWidgets } from "./YardWidgets";
 
-const MAX_YARD_ZOOM = 7;
+// For now remove yard icon
+const MAX_YARD_ZOOM = -Infinity;
+
 const MIN_RAIL_ZOOM = 10;
 const MAX_RAIL_ZOOM = 18;
 
