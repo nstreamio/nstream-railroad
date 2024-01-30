@@ -1,9 +1,6 @@
 package io.nstream.railroad.agent;
 
 import io.nstream.railroad.util.Simulator;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import model.Alert;
 import model.Health;
 import model.Operation;
@@ -12,13 +9,15 @@ import nstream.adapter.common.AdapterUtils;
 import nstream.adapter.common.schedule.ExecutorAgent;
 import nstream.adapter.csv.CsvIngestingAgent;
 import swim.api.SwimLane;
-import swim.api.lane.MapLane;
 import swim.api.lane.ValueLane;
 import swim.concurrent.TimerRef;
 import swim.csv.Csv;
 import swim.structure.Item;
 import swim.structure.Record;
 import swim.structure.Value;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
 public class DataSimAgent extends ExecutorAgent {
 
@@ -30,7 +29,7 @@ public class DataSimAgent extends ExecutorAgent {
   private Iterator<Item> locationsIt;
   private Value locations = Value.absent();
 
-  private long startTime = System.currentTimeMillis();
+  private final long startTime = System.currentTimeMillis();
   private boolean simIdle = false;
   private boolean simDisconnect = false;
 
@@ -76,7 +75,7 @@ public class DataSimAgent extends ExecutorAgent {
     if (!simIdle && !simDisconnect) {
       final Operation simOperation = Simulator.simOperation();
       final Value locMetrics =
-            this.locationsIt.next()
+          this.locationsIt.next()
               .updated("brakeLevel", simOperation.getBrakeLevel())
               .updated("fuelLevel", simOperation.getFuelLevel())
               .updated("engineTemperature", simOperation.getEngineTemp())
@@ -92,18 +91,18 @@ public class DataSimAgent extends ExecutorAgent {
       final Health simHealth = Simulator.simHealth();
       final Alert simAlert = Simulator.simAlert();
       final Value v = Record.create()
-            .slot("reportTime", System.currentTimeMillis())
-            .slot("cpuUsage", simPerformance.getCpuUsage())
-            .slot("memoryUsage", simPerformance.getMemoryUsage())
-            .slot("networkBandwidth", simPerformance.getNetworkBandwidth())
-            .slot("storage", simPerformance.getStorage())
-            .slot("battery", simHealth.getBattery())
-            .slot("powerSupplyStatus", simHealth.getPowerSupplyStatus())
-            .slot("signalStrength", simHealth.getSignalStrength())
-            .slot("temperature", simHealth.getTemperature())
-            .slot("isCriticalAlert", simAlert.isCritical())
-            .slot("alertType", simAlert.getAlertType())
-            .slot("alertTime", simAlert.getTimestamp());
+          .slot("reportTime", System.currentTimeMillis())
+          .slot("cpuUsage", simPerformance.getCpuUsage())
+          .slot("memoryUsage", simPerformance.getMemoryUsage())
+          .slot("networkBandwidth", simPerformance.getNetworkBandwidth())
+          .slot("storage", simPerformance.getStorage())
+          .slot("battery", simHealth.getBattery())
+          .slot("powerSupplyStatus", simHealth.getPowerSupplyStatus())
+          .slot("signalStrength", simHealth.getSignalStrength())
+          .slot("temperature", simHealth.getTemperature())
+          .slot("isCriticalAlert", simAlert.isCritical())
+          .slot("alertType", simAlert.getAlertType())
+          .slot("alertTime", simAlert.getTimestamp());
       this.rcuMetrics.set(v);
       if (System.currentTimeMillis() - startTime > 60000) {
         this.simIdle = this.info.get().get("simIdle").booleanValue();

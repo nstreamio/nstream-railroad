@@ -82,17 +82,33 @@ public class Operation {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     Operation that = (Operation) o;
 
-    if (throttle != that.throttle) return false;
-    if (brakeLevel != that.brakeLevel) return false;
-    if (fuelLevel != that.fuelLevel) return false;
-    if (engineTemp != that.engineTemp) return false;
-    if (doorOpen != that.doorOpen) return false;
-    if (emergencyBrake != that.emergencyBrake) return false;
+    if (throttle != that.throttle) {
+      return false;
+    }
+    if (brakeLevel != that.brakeLevel) {
+      return false;
+    }
+    if (fuelLevel != that.fuelLevel) {
+      return false;
+    }
+    if (engineTemp != that.engineTemp) {
+      return false;
+    }
+    if (doorOpen != that.doorOpen) {
+      return false;
+    }
+    if (emergencyBrake != that.emergencyBrake) {
+      return false;
+    }
     return engineFault == that.engineFault;
   }
 

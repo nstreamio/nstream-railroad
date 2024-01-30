@@ -20,7 +20,7 @@ public class RclAgent extends ExecutorAgent {
 
   @SwimLane("addEvent")
   CommandLane<Value> addEvent = this.<Value>commandLane().onCommand(v -> this.info.set(v));
-  
+
   @SwimLane("status")
   ValueLane<Value> status = this.<Value>valueLane().didSet((newValue, oldValue) -> updateGeo());
 
@@ -30,13 +30,13 @@ public class RclAgent extends ExecutorAgent {
   @SwimLane("locomotiveMetrics")
   ValueLane<Value> locomotiveMetrics = this.<Value>valueLane().didSet((newValue, oldValue) -> {
     final boolean isLatChange =
-          Double.compare(newValue.get("latitude").doubleValue(-1.0), oldValue.get("latitude").doubleValue(-2.0)) != 0;
+        Double.compare(newValue.get("latitude").doubleValue(-1.0), oldValue.get("latitude").doubleValue(-2.0)) != 0;
     final boolean isLonChange =
-          Double.compare(newValue.get("longitude").doubleValue(-1.0), oldValue.get("longitude").doubleValue(-2.0)) != 0;
+        Double.compare(newValue.get("longitude").doubleValue(-1.0), oldValue.get("longitude").doubleValue(-2.0)) != 0;
     if (isLatChange || isLonChange) {
       this.status.set(this.status.get()
-            .updated("locationChangeTime", System.currentTimeMillis())
-            .updated("isIdle", false));
+          .updated("locationChangeTime", System.currentTimeMillis())
+          .updated("isIdle", false));
     }
   });
 
@@ -50,24 +50,24 @@ public class RclAgent extends ExecutorAgent {
   private void updateGeo() {
     Value currentGeo = this.geo.get();
     Value newGeo = currentGeo
-          .updated("isCriticalAlert", this.status.get().get("isCriticalAlert"))
-          .updated("isOffline", this.status.get().get("isOffline"))
-          .updated("isIdle", this.status.get().get("isIdle"))
-          .updated("hrcuLat", this.info.get().get("hrcuLat"))
-          .updated("hrcuLon", this.info.get().get("hrcuLon"))
-          .updated("latitude", this.locomotiveMetrics.get().get("latitude"))
-          .updated("longitude", this.locomotiveMetrics.get().get("longitude"));
+        .updated("isCriticalAlert", this.status.get().get("isCriticalAlert"))
+        .updated("isOffline", this.status.get().get("isOffline"))
+        .updated("isIdle", this.status.get().get("isIdle"))
+        .updated("hrcuLat", this.info.get().get("hrcuLat"))
+        .updated("hrcuLon", this.info.get().get("hrcuLon"))
+        .updated("latitude", this.locomotiveMetrics.get().get("latitude"))
+        .updated("longitude", this.locomotiveMetrics.get().get("longitude"));
     this.geo.set(newGeo);
   }
 
   @SwimLane("rcuMetrics")
   ValueLane<Value> rcuMetrics = this.<Value>valueLane().didSet((newValue, oldValue) -> {
     this.status.set(this.status.get()
-          .updated("alertStatus", newValue.get("alertType"))
-          .updated("isCriticalAlert", newValue.get("isCriticalAlert"))
-          .updated("alertTime", newValue.get("alertTime"))
-          .updated("reportTime", newValue.get("reportTime"))
-          .updated("isOffline", false));
+        .updated("alertStatus", newValue.get("alertType"))
+        .updated("isCriticalAlert", newValue.get("isCriticalAlert"))
+        .updated("alertTime", newValue.get("alertTime"))
+        .updated("reportTime", newValue.get("reportTime"))
+        .updated("isOffline", false));
   });
 
   private void checkInactivity() {

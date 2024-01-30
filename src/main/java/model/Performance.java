@@ -49,14 +49,24 @@ public class Performance {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     Performance performance = (Performance) o;
 
-    if (Float.compare(performance.cpuUsage, cpuUsage) != 0) return false;
-    if (Float.compare(performance.memoryUsage, memoryUsage) != 0) return false;
-    if (Float.compare(performance.networkBandwidth, networkBandwidth) != 0) return false;
+    if (Float.compare(performance.cpuUsage, cpuUsage) != 0) {
+      return false;
+    }
+    if (Float.compare(performance.memoryUsage, memoryUsage) != 0) {
+      return false;
+    }
+    if (Float.compare(performance.networkBandwidth, networkBandwidth) != 0) {
+      return false;
+    }
     return Float.compare(performance.storage, storage) == 0;
   }
 

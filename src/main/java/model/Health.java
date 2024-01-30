@@ -50,14 +50,24 @@ public class Health {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     Health health = (Health) o;
 
-    if (Float.compare(health.temperature, temperature) != 0) return false;
-    if (battery != health.battery) return false;
-    if (signalStrength != health.signalStrength) return false;
+    if (Float.compare(health.temperature, temperature) != 0) {
+      return false;
+    }
+    if (battery != health.battery) {
+      return false;
+    }
+    if (signalStrength != health.signalStrength) {
+      return false;
+    }
     return Objects.equals(powerSupplyStatus, health.powerSupplyStatus);
   }
 
