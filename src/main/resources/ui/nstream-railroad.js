@@ -934,7 +934,10 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             nodeModel.setTrait("location", locationTrait);
             const widgetGroup = new YardWidgets();
             entityTrait.setTrait("widgets", widgetGroup);
-            const RailModel = this.createNodeModel("/Rail");
+        }
+        updateNodeModel(nodeModel, value) {
+            const entityTrait = nodeModel.getTrait(platform.EntityTrait);
+            const RailModel = this.createNodeModel(entityTrait.uri + "/Rail");
             const railEntityTrait = RailModel.getTrait(platform.EntityTrait);
             const districtTrait = new platform.DistrictTrait();
             districtTrait.setZoomRange(MIN_RAIL_ZOOM, MAX_RAIL_ZOOM);
@@ -944,9 +947,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             RailModel.setChild("subdistricts", subdistricts);
             railEntityTrait.subentities.binds = false;
             railEntityTrait.subentities.setModel(subdistricts);
-            this.appendChild(RailModel, "/Rail");
-        }
-        updateNodeModel(nodeModel, value) {
+            this.appendChild(RailModel, entityTrait.uri + "/Rail");
         }
     }
     __decorate([

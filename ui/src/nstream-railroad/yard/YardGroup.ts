@@ -22,8 +22,11 @@ export class YardGroup extends NodeGroup {
 
     const widgetGroup = new YardWidgets();
     entityTrait.setTrait("widgets", widgetGroup);
+  }
 
-    const RailModel = this.createNodeModel("/Rail");
+  updateNodeModel(nodeModel: Model, value: Value) {
+    const entityTrait = nodeModel.getTrait(EntityTrait)!;
+    const RailModel = this.createNodeModel(entityTrait.uri + "/Rail");
 
     const railEntityTrait = RailModel.getTrait(EntityTrait)!;
     const districtTrait = new DistrictTrait();
@@ -35,12 +38,7 @@ export class YardGroup extends NodeGroup {
     RailModel.setChild("subdistricts", subdistricts);
     (railEntityTrait.subentities.binds as any) = false;
     railEntityTrait.subentities.setModel(subdistricts);
-    this.appendChild(RailModel, "/Rail");    
-
-  }
-
-  updateNodeModel(nodeModel: Model, value: Value) {
-
+    this.appendChild(RailModel, entityTrait.uri + "/Rail");    
   }
 
   @MapDownlinkFastener<YardGroup, Value, Value>({
