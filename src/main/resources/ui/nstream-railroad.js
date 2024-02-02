@@ -922,8 +922,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
         })
     ], YardWidgets.prototype, "entity", void 0);
 
-    // For now remove yard icon
-    const MAX_YARD_ZOOM$1 = -Infinity;
+    const MAX_YARD_ZOOM$1 = 12;
     const MIN_RAIL_ZOOM = 10;
     const MAX_RAIL_ZOOM = 18;
     class YardGroup extends platform.NodeGroup {
@@ -976,8 +975,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
     const MIN_LOCOMOTIVE_ZOOM = -Infinity;
     const MAX_LOCOMOTIVE_ZOOM = Infinity;
     // To change zoom level also change _Group class
-    // For now remove yard icon
-    const MAX_YARD_ZOOM = -Infinity;
+    const MAX_YARD_ZOOM = 12;
     class GridGroup extends platform.NodeGroup {
         constructor(geoTile, nodeUri, metaHostUri) {
             super(metaHostUri);

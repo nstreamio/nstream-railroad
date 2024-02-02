@@ -14,9 +14,7 @@ const MIN_LOCOMOTIVE_ZOOM = -Infinity;
 const MAX_LOCOMOTIVE_ZOOM = Infinity;
 
 // To change zoom level also change _Group class
-// For now remove yard icon
-const MAX_YARD_ZOOM = -Infinity;
-
+const MAX_YARD_ZOOM = 12;
 
 export class GridGroup extends NodeGroup {
 
