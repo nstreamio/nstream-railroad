@@ -1,10 +1,10 @@
 package io.nstream.railroad.agent;
 
 import io.nstream.railroad.util.Simulator;
-import model.Alert;
-import model.Health;
-import model.Operation;
-import model.Performance;
+import io.nstream.railroad.model.Alert;
+import io.nstream.railroad.model.Health;
+import io.nstream.railroad.model.Operation;
+import io.nstream.railroad.model.Performance;
 import nstream.adapter.common.AdapterUtils;
 import nstream.adapter.common.schedule.ExecutorAgent;
 import nstream.adapter.csv.CsvIngestingAgent;

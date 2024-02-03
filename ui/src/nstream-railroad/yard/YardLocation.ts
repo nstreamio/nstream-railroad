@@ -26,9 +26,7 @@ export class YardLocation extends LocationTrait {
           width: YARD_ICON_SIZE,
           height: YARD_ICON_SIZE,
           graphics: YARD_ICON,
-          // Yellow
-          fill: "rgb(255, 255, 0)",
-        });
+      });
         this.owner.setGeographic(geographic);
       } else {
         this.owner.setGeographic(null);
@@ -40,9 +38,12 @@ export class YardLocation extends LocationTrait {
 
   private getStatusFactor(status: Value): StatusFactor | null {
 
-    const numOfAlerts = status.get("Alerts").length;
+    const numOfAlerts = status.get("alertCount").numberValue(0);
+    const numOfWarnings = status.get("warningCount").numberValue(0);
+    const total = status.get("totalCount").numberValue(0);
 
-    if (numOfAlerts > 0) return StatusFactor.create("Severity", StatusVector.of([Status.warning, 2], [Status.alert, Math.min(numOfAlerts / 2, 1)]));
+    if (numOfAlerts > 0) return StatusFactor.create("Severity", StatusVector.of([Status.warning, 2], [Status.alert, Math.min(numOfAlerts / total, 1)]));
+    if (numOfWarnings > 0) return StatusFactor.create("Severity", StatusVector.of([Status.warning, 1], [Status.warning, Math.min(numOfWarnings / total, 2)]));
 
     return null;
   }

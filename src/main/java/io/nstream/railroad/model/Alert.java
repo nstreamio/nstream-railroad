@@ -1,4 +1,4 @@
-package model;
+package io.nstream.railroad.model;
 
 public class Alert {
 
