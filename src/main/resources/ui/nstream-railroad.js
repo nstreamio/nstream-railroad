@@ -730,9 +730,13 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             this.statusDownlink.nodeUri(nodeUri);
         }
         getStatusFactor(status) {
-            const numOfAlerts = status.get("Alerts").length;
+            const numOfAlerts = status.get("alertCount").numberValue(0);
+            const numOfWarnings = status.get("warningCount").numberValue(0);
+            const total = status.get("totalCount").numberValue(0);
             if (numOfAlerts > 0)
-                return platform.StatusFactor.create("Severity", platform.StatusVector.of([platform.Status.warning, 2], [platform.Status.alert, Math.min(numOfAlerts / 2, 1)]));
+                return platform.StatusFactor.create("Severity", platform.StatusVector.of([platform.Status.warning, 2], [platform.Status.alert, Math.min(numOfAlerts / total, 1)]));
+            if (numOfWarnings > 0)
+                return platform.StatusFactor.create("Severity", platform.StatusVector.of([platform.Status.warning, 1], [platform.Status.warning, Math.min(numOfWarnings / total, 2)]));
             return null;
         }
     }
@@ -749,8 +753,6 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
                         width: YARD_ICON_SIZE,
                         height: YARD_ICON_SIZE,
                         graphics: YARD_ICON,
-                        // Yellow
-                        fill: "rgb(255, 255, 0)",
                     });
                     this.owner.setGeographic(geographic);
                 }
@@ -771,9 +773,8 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
     ], YardLocation.prototype, "statusDownlink", void 0);
 
     class YardWidgets extends platform.WidgetGroup {
-        // Status Widget
-        updateStatusTable(key, value) {
-            const rowModel = this.getOrCreateRowModel(key);
+        updateTable(table, key, value) {
+            const rowModel = this.getOrCreateRowModel(table, key);
             const keyCell = rowModel.getTrait("key", toolkit.TextCellTrait);
             keyCell.content(key.stringValue(""));
             const timeCell = rowModel.getTrait("time", toolkit.TextCellTrait);
@@ -798,8 +799,27 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             }
             statusCell.content(status);
         }
-        getOrCreateRowModel(key) {
+        updateStatusTable(value) {
             const tableModel = this.statusTable.model;
+            const total = value.get("totalCount").numberValue(0);
+            const totalRowModel = tableModel.getChild("total");
+            totalRowModel.getTrait("value", toolkit.TextCellTrait).content(total + "");
+            const alertCount = value.get("alertCount").numberValue(0);
+            const alertRowModel = tableModel.getChild("alert");
+            alertRowModel.getTrait("value", toolkit.TextCellTrait).content(alertCount + "");
+            const warningCount = value.get("warningCount").numberValue(0);
+            const warningRowModel = tableModel.getChild("warning");
+            warningRowModel.getTrait("value", toolkit.TextCellTrait).content(warningCount + "");
+        }
+        removeFromTable(table, key) {
+            const tableModel = table.model;
+            let rowModel = tableModel.getChild(key.stringValue(""));
+            if (rowModel != null) {
+                tableModel.removeChild(rowModel);
+            }
+        }
+        getOrCreateRowModel(table, key) {
+            const tableModel = table.model;
             let rowModel = tableModel.getChild(key.stringValue(""));
             if (rowModel == null) {
                 rowModel = this.createRowModel(key);
@@ -845,7 +865,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
     }
     __decorate([
         toolkit.ModelRef({
-            key: "statusTable",
+            key: "alertsTable",
             createModel() {
                 const tableModel = new toolkit.Model();
                 tableModel.appendTrait(toolkit.TableTrait, "table")
@@ -865,7 +885,95 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
                 return tableModel;
             },
         })
+    ], YardWidgets.prototype, "alertsTable", void 0);
+    __decorate([
+        toolkit.ModelRef({
+            key: "warningsTable",
+            createModel() {
+                const tableModel = new toolkit.Model();
+                tableModel.appendTrait(toolkit.TableTrait, "table")
+                    .colSpacing(12);
+                tableModel.appendTrait(toolkit.ColTrait, "key")
+                    .layout({ key: "key", grow: 1, textColor: toolkit.Look.mutedColor });
+                tableModel.appendTrait(toolkit.ColTrait, "value")
+                    .layout({ key: "time", grow: 1, textColor: toolkit.Look.accentColor });
+                tableModel.appendTrait(toolkit.ColTrait, "value")
+                    .layout({ key: "status", grow: 1, textColor: toolkit.Look.accentColor });
+                const headerRowModel = new toolkit.Model();
+                headerRowModel.appendTrait(toolkit.RowTrait, "row");
+                headerRowModel.appendTrait(toolkit.TextCellTrait, "key").content("RCL");
+                headerRowModel.appendTrait(toolkit.TextCellTrait, "time").content("Report Time");
+                headerRowModel.appendTrait(toolkit.TextCellTrait, "status").content("Status");
+                tableModel.appendChild(headerRowModel, "header");
+                return tableModel;
+            },
+        })
+    ], YardWidgets.prototype, "warningsTable", void 0);
+    __decorate([
+        toolkit.ModelRef({
+            key: "statusTable",
+            createModel() {
+                const tableModel = new toolkit.Model();
+                tableModel.appendTrait(toolkit.TableTrait, "table")
+                    .colSpacing(12);
+                tableModel.appendTrait(toolkit.ColTrait, "key")
+                    .layout({ key: "key", grow: 3, textColor: toolkit.Look.mutedColor });
+                tableModel.appendTrait(toolkit.ColTrait, "value")
+                    .layout({ key: "value", grow: 2, textColor: toolkit.Look.accentColor });
+                const totalRowModel = new toolkit.Model();
+                totalRowModel.appendTrait(toolkit.RowTrait, "row");
+                totalRowModel.appendTrait(toolkit.TextCellTrait, "key")
+                    .content("Total");
+                totalRowModel.appendTrait(toolkit.TextCellTrait, "value");
+                tableModel.appendChild(totalRowModel, "total");
+                const alertRowModel = new toolkit.Model();
+                alertRowModel.appendTrait(toolkit.RowTrait, "row");
+                alertRowModel.appendTrait(toolkit.TextCellTrait, "key")
+                    .content("Alerts");
+                alertRowModel.appendTrait(toolkit.TextCellTrait, "value");
+                tableModel.appendChild(alertRowModel, "alert");
+                const warningRowModel = new toolkit.Model();
+                warningRowModel.appendTrait(toolkit.RowTrait, "row");
+                warningRowModel.appendTrait(toolkit.TextCellTrait, "key")
+                    .content("Warnings");
+                warningRowModel.appendTrait(toolkit.TextCellTrait, "value");
+                tableModel.appendChild(warningRowModel, "warning");
+                return tableModel;
+            },
+        })
     ], YardWidgets.prototype, "statusTable", void 0);
+    __decorate([
+        toolkit.ModelRef({
+            key: "alerts",
+            binds: true,
+            observes: true,
+            createModel() {
+                const widgetModel = new toolkit.Model();
+                const widgetTrait = new platform.WidgetTrait();
+                widgetTrait.title.setValue("ALERTS");
+                widgetTrait.subtitle.setValue("YARD");
+                widgetModel.setTrait("widget", widgetTrait);
+                this.owner.alertsTable.insertModel(widgetModel);
+                return widgetModel;
+            },
+        })
+    ], YardWidgets.prototype, "alertsWidget", void 0);
+    __decorate([
+        toolkit.ModelRef({
+            key: "warnings",
+            binds: true,
+            observes: true,
+            createModel() {
+                const widgetModel = new toolkit.Model();
+                const widgetTrait = new platform.WidgetTrait();
+                widgetTrait.title.setValue("WARNINGS");
+                widgetTrait.subtitle.setValue("YARD");
+                widgetModel.setTrait("widget", widgetTrait);
+                this.owner.warningsTable.insertModel(widgetModel);
+                return widgetModel;
+            },
+        })
+    ], YardWidgets.prototype, "warningsWidget", void 0);
     __decorate([
         toolkit.ModelRef({
             key: "status",
@@ -874,7 +982,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             createModel() {
                 const widgetModel = new toolkit.Model();
                 const widgetTrait = new platform.WidgetTrait();
-                widgetTrait.title.setValue("STATUS");
+                widgetTrait.title.setValue("SUMMARY");
                 widgetTrait.subtitle.setValue("YARD");
                 widgetModel.setTrait("widget", widgetTrait);
                 this.owner.statusTable.insertModel(widgetModel);
@@ -887,12 +995,41 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             nodeUri() {
                 return this.owner.entity.trait.uri;
             },
-            laneUri: "agents",
+            laneUri: "alertRcls",
             didUpdate(key, newValue, oldValue) {
-                this.owner.updateStatusTable(key, newValue);
+                this.owner.updateTable(this.owner.alertsTable, key, newValue);
+            },
+            didRemove(key) {
+                this.owner.removeFromTable(this.owner.alertsTable, key);
             },
         })
-    ], YardWidgets.prototype, "agentsDownlink", void 0);
+    ], YardWidgets.prototype, "alertRclsDownlink", void 0);
+    __decorate([
+        runtime.MapDownlinkFastener({
+            nodeUri() {
+                return this.owner.entity.trait.uri;
+            },
+            laneUri: "warningRcls",
+            didUpdate(key, newValue, oldValue) {
+                this.owner.updateTable(this.owner.warningsTable, key, newValue);
+            },
+            didRemove(key) {
+                this.owner.removeFromTable(this.owner.warningsTable, key);
+            },
+        })
+    ], YardWidgets.prototype, "warningRclsDownlink", void 0);
+    __decorate([
+        runtime.ValueDownlinkFastener({
+            nodeUri() {
+                return this.owner.entity.trait.uri;
+            },
+            consumed: true,
+            laneUri: "status",
+            didSet(newValue, oldValue) {
+                this.owner.updateStatusTable(newValue);
+            },
+        })
+    ], YardWidgets.prototype, "statusDownlink", void 0);
     __decorate([
         toolkit.TraitRef({
             type: toolkit.SelectableTrait,
@@ -900,12 +1037,22 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
             observes: true,
             traitDidSelect() {
                 this.owner.statusWidget.insertModel();
-                this.owner.agentsDownlink.consume(this.owner);
+                this.owner.alertsWidget.insertModel();
+                this.owner.warningsWidget.insertModel();
+                this.owner.statusDownlink.consume(this.owner);
+                this.owner.alertRclsDownlink.consume(this.owner);
+                this.owner.warningRclsDownlink.consume(this.owner);
             },
             traitWillUnselect() {
-                this.owner.agentsDownlink.unconsume(this.owner);
+                this.owner.statusDownlink.unconsume(this.owner);
                 this.owner.statusWidget.deleteModel();
                 this.owner.statusTable.deleteModel();
+                this.owner.alertRclsDownlink.unconsume(this.owner);
+                this.owner.alertsWidget.deleteModel();
+                this.owner.alertsTable.deleteModel();
+                this.owner.warningRclsDownlink.unconsume(this.owner);
+                this.owner.warningsWidget.deleteModel();
+                this.owner.warningsTable.deleteModel();
             },
             detectTrait(trait) {
                 return trait instanceof toolkit.SelectableTrait ? trait : null;
@@ -972,7 +1119,7 @@ this.nstream.railroad = (function (exports, runtime, toolkit, platform) {
     const LOCOMOTIVE_ICON_SIZE = 25;
     const RCU_ICON = toolkit.VectorIcon.create(24, 24, "M12,7C13.05,7,13.92,7.82,13.99,8.85L14,9C14,9.74,13.6,10.39,13,10.73L13,18L18.15,18C19.28,18,20.32,18.64,20.83,19.66L21.28,20.55C21.61,21.22,21.13,22,20.38,22L3.62,22C2.87,22,2.39,21.22,2.72,20.55L3.17,19.66C3.68,18.64,4.72,18,5.85,18L11,18L11,10.73C10.4,10.39,10,9.74,10,9C10,7.9,10.9,7,12,7ZM19.07,2.28C22.98,5.99,22.98,12.01,19.07,15.72C18.68,16.09,18.05,16.09,17.66,15.72C17.27,15.35,17.27,14.75,17.66,14.38C20.78,11.41,20.78,6.59,17.66,3.62C17.27,3.25,17.27,2.65,17.66,2.28C18.05,1.91,18.68,1.91,19.07,2.28ZM6.34,2.28C6.73,2.65,6.73,3.25,6.34,3.62C3.22,6.59,3.22,11.41,6.34,14.38C6.73,14.75,6.73,15.35,6.34,15.72C5.95,16.09,5.32,16.09,4.93,15.72C1.02,12.01,1.02,5.99,4.93,2.28C5.32,1.91,5.95,1.91,6.34,2.28ZM16.24,4.97C18.59,7.19,18.59,10.81,16.24,13.03C15.85,13.4,15.22,13.4,14.83,13.03C14.44,12.66,14.44,12.06,14.83,11.69C16.39,10.2,16.39,7.8,14.83,6.31C14.44,5.94,14.44,5.34,14.83,4.97C15.22,4.6,15.85,4.6,16.24,4.97ZM9.17,4.97C9.56,5.34,9.56,5.94,9.17,6.31C7.61,7.8,7.61,10.2,9.17,11.69C9.56,12.06,9.56,12.66,9.17,13.03C8.78,13.4,8.15,13.4,7.76,13.03C5.41,10.81,5.41,7.19,7.76,4.97C8.15,4.6,8.78,4.6,9.17,4.97Z");
     const RCU_ICON_SIZE = 25;
-    const MIN_LOCOMOTIVE_ZOOM = -Infinity;
+    const MIN_LOCOMOTIVE_ZOOM = 7; //-Infinity;
     const MAX_LOCOMOTIVE_ZOOM = Infinity;
     // To change zoom level also change _Group class
     const MAX_YARD_ZOOM = 12;

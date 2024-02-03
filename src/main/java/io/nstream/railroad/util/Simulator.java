@@ -1,9 +1,9 @@
 package io.nstream.railroad.util;
 
-import model.Alert;
-import model.Health;
-import model.Operation;
-import model.Performance;
+import io.nstream.railroad.model.Alert;
+import io.nstream.railroad.model.Health;
+import io.nstream.railroad.model.Operation;
+import io.nstream.railroad.model.Performance;
 
 public class Simulator {
 
