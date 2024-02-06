@@ -1,5 +1,42 @@
 # Railroad Demo
 
+A tutorial application for teaching core Swim concepts.  See a hosted version
+of this app running at [https://railroad.nstream-demo.io](https://railroad.nstream-demo.io/).
+
+## Architecture
+
+![nstream railroad architecture](info/NStream_RailRoad_Arch.png)
+
+### Goal of this Demo
+
+* Demonstrate via a realistic mocked demo, how Nstream enables railroads and adjacent players to efficiently build their own solutions in their existing Java development stacks leveraging their streaming data sources with Nstream’s developer framework.
+* This demo includes a map of the United States that can drill into cities with Rail yards and show the current and changing location and health status of the RCL assets on the Railroad track.
+
+#### Details of terms in the Architecture Diagram
+
+* RCU Agent
+  * Loads metadata (id, RCL id)
+  * Receives metrics  (CPU, Memory, Battery, Signal, Temp, Alerts) for a given RCU
+  * Statefully models the current state of the RCU
+  * Continuously analyzes and computes status as it changes in real-time
+  * Retains a history of metric data
+* Locomotive Agent
+  * Loads metadata (id, RCL id)
+  * Receives metrics  (Brake Level, Throttle, Engine Temperature, Location) for a given Locomotive 
+  * Statefully models the current state of the Locomotive 
+  * Continuously analyzes and computes status as it changes in real-time 
+  * Retains a history of metric data
+* RCL Agent
+  * Loads metadata (id, yard id)
+  * Receives the real-time state of the RCU and Locomotive that is associated with it 
+  * Statefully models the current state of the RCL 
+  * Continuously analyzes and computes status as it changes in real-time based on the RCU and Locomotive status
+* Yard Agent
+  * Loads metadata (yard id, name)
+  * Receives the real-time state of every RCL unit that are in the yard 
+  * Statefully models the current state of the Yard 
+  * Continuously analyzes and computes new status based on all the RCL statuses as it changes in real-time
+
 ## Prerequisites
 
 * [Install JDK 17+](https://www.oracle.com/technetwork/java/javase/downloads/index.html).
@@ -11,27 +48,124 @@
 
 ## Run
 
-### Windows
+### Running on Linux or MacOS
 
-Install the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+```bash
+$ ./gradlew run
+```
 
-Execute the command `./run.sh` from a console pointed to the application's home directory. This will start a Swim server, seeded with the application's logic, on port 9001.
+### Viewing the UI
 
-It will also compile the TypeScript sources, and bundle the generated Javascript. The resulting HTML document and JS libraries are copied to `server/src/main/resources/ui`. With the help of Swim's `UIRouter`, the contents of this directory are served at http://localhost:9001.
-   ```console
-    user@machine:~$ ./run.sh
-   ```
+Open a web browser to [http://localhost:9001](http://localhost:9001).
 
-### \*nix
 
-Execute the command `./run.sh` from a console pointed to the application's home directory. This will start a Swim server, seeded with the application's logic, on port 9001.
+### Introspecting a running application
 
-It will also compile the TypeScript sources, and bundle the generated Javascript. The resulting HTML document and JS libraries are copied to `server/src/main/resources/ui`. With the help of Swim's `UIRouter`, the contents of this directory are served at http://localhost:9001.
-   ```console
-    user@machine:~$ ./run.sh
-   ```
+The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
-## Viewing UI
+#### Host Introspection
 
-Once the application is running, open the following URL on your browser: http://localhost:9001.
+Use the `swim:meta:host` agent to introspect a running host. Use the `pulse`
+lane to stream high level stats:
 
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l pulse
+```
+
+The `nodes` lane enumerates all agents running on a host:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l nodes
+```
+
+The fragment part of the `nodes` lane URI can contain a URI subpath filter:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l nodes#/
+```
+
+#### Node Introspection
+
+You can stream the utilization of an individual web agent:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fOakland -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fFortWorth -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fWestColton -l pulse
+```
+
+And discover its lanes:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l lanes
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fOakland -l lanes
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fFortWorth -l lanes
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fWestColton -l lanes
+```
+
+Some additional examples:
+
+* Locomotive
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2frcl%2frcl17 -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2frcl%2frcl17 -l lanes
+```
+
+* Introspection of details for Yards, Yard-Rails and Locomotive stored in CSV format
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyard-rails -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyard-rails -l lanes
+
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyards -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyards -l lanes
+
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2frcls -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2frcls -l lanes
+```
+
+* Map coordinates
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fmap%2f84024,321683,19 -l pulse
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fmap%2f84024,321683,19 -l lanes
+```
+
+#### Mesh introspection
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:edge -l meshes
+```
+
+#### Log introspection
+
+You can stream log message for a particular web agent:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l debugLog
+```
+
+Or stream all log messages for a host:
+
+```sh
+swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l debugLog
+```
+
+## Repository Structure
+
+### Key files
+
+- [build.gradle](build.gradle) — backend project configuration script
+- [gradle.properties](gradle.properties) — backend project configuration variables
+- [package.json](ui/package.json) — frontend project configuration
+- [rollup.config.js](ui/rollup.config.js) — frontend bundle configuration script
+
+### Key directories
+
+- [src](src) — backend source code, and configuration resources
+  - [main/java](src/main/java) — backend source code
+  - [main/resources](src/main/resources) — backend configuration resources
+- [ui src](ui/src) — frontend source code
+- [gradle](gradle) — support files for the `gradlew` build script
