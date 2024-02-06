@@ -59,11 +59,78 @@ $ ./gradlew run
 Open a web browser to [http://localhost:9001](http://localhost:9001).
 
 
-### Introspecting a running application
+## Streaming APIs
 
 The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
-#### Host Introspection
+### Application APIs
+
+#### Streaming APIs for top level Monitor
+
+1. **YARD**:
+
+(Below, "Bailey" yard is used as an example)
+
+* Yard Info - provides latitude and longitude of a particular yard
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l info
+```
+
+* Yard Status - provides total number of warnings and alerts. 
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l status
+```
+
+* Details of all the rails associated with the yard 
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l rails
+```
+
+* Details of all the warnings associated with the yard
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l warningRcls
+```
+
+* Details of all the alerts associated with the yard
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l alertRcls
+```
+
+2. **RCLs**:
+
+(Below, rcl "32" is used as an example)
+
+* Info of the rcl fetched from the rcls csv file 
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l info
+```
+
+* Current Status of the rcl
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l status
+```
+
+* Current geographical coordinates of the rcl along-with related details
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l geo
+```
+
+* Metrics of the rcl
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l locomotiveMetrics
+```
+
+* Historical data of the rcl's metrics
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l metricsHistory
+```
+
+* RCU metrics belonging to the rcl
+```
+swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l rcuMetrics
+```
+
+### Introspection APIs
 
 Use the `swim:meta:host` agent to introspect a running host. Use the `pulse`
 lane to stream high level stats:
