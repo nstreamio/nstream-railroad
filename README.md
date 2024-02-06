@@ -77,7 +77,8 @@ Open a web browser to [http://localhost:9001](http://localhost:9001).
 
 
 ## Streaming APIs
-The Swim runtime exposes its internal subsystems as a set of meta web agents.
+
+The [swim-cli](https://www.swimos.org/backend/cli/) is the simplest way to fetch or stream data from  the web agents in this application
 
 ### "swim-cli" installation
 **swim-cli** installation details available here: https://www.swimos.org/backend/cli/ 
@@ -86,7 +87,7 @@ The Swim runtime exposes its internal subsystems as a set of meta web agents.
 **Note:** 
 * Below **swim-cli** commands for introspection are for streaming locally running application.
 * There is a hosted version of this application running here: https://railroad.nstream-demo.io/
-* To stream APIs for the hosted version, replace ```warp://localhost:9001``` in below commands with ```warps://railroad.nstream-demo.io``` 
+* To stream APIs for the hosted version, replace `warp://localhost:9001` in below commands with `warps://railroad.nstream-demo.io` 
 
 1. **YARD**:
 
@@ -152,6 +153,7 @@ swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l rcuMetrics
 ```
 
 ### Introspection APIs
+The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
 Use the `swim:meta:host` agent to introspect a running host. Use the `pulse`
 lane to stream high level stats:
