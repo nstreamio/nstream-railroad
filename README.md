@@ -79,7 +79,14 @@ Open a web browser to [http://localhost:9001](http://localhost:9001).
 ## Streaming APIs
 The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
+### "swim-cli" installation
+**swim-cli** installation details available here: https://www.swimos.org/backend/cli/ 
+
 ### Application APIs
+**Note:** 
+* Below **swim-cli** commands for introspection are for streaming locally running application.
+* There is a hosted version of this application running here: https://railroad.nstream-demo.io/
+* To stream APIs for the hosted version, replace ```warp://localhost:9001``` in below commands with ```warps://railroad.nstream-demo.io``` 
 
 1. **YARD**:
 
@@ -87,27 +94,27 @@ The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
 * Yard Info - provides latitude and longitude of a particular yard
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l info
+swim-cli sync -h warp://localhost:9001 -n /yard/Bailey -l info
 ```
 
 * Yard Status - provides total number of warnings and alerts. 
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l status
+swim-cli sync -h warp://localhost:9001 -n /yard/Bailey -l status
 ```
 
 * Details of all the rails associated with the yard 
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l rails
+swim-cli sync -h warp://localhost:9001 -n /yard/Bailey -l rails
 ```
 
 * Details of all the warnings associated with the yard
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l warningRcls
+swim-cli sync -h warp://localhost:9001 -n /yard/Bailey -l warningRcls
 ```
 
 * Details of all the alerts associated with the yard
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l alertRcls
+swim-cli sync -h warp://localhost:9001 -n /yard/Bailey -l alertRcls
 ```
 
 2. **RCLs**:
@@ -116,32 +123,32 @@ swim-cli sync -h warps://railroad.nstream-demo.io -n /yard/Bailey -l alertRcls
 
 * Info of the rcl fetched from the rcls csv file 
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l info
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l info
 ```
 
 * Current Status of the rcl
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l status
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l status
 ```
 
 * Current geographical coordinates of the rcl along-with related details
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l geo
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l geo
 ```
 
 * Metrics of the rcl
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l locomotiveMetrics
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l locomotiveMetrics
 ```
 
 * Historical data of the rcl's metrics
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l metricsHistory
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l metricsHistory
 ```
 
 * RCU metrics belonging to the rcl
 ```
-swim-cli sync -h warps://railroad.nstream-demo.io -n /rcl/rcl32 -l rcuMetrics
+swim-cli sync -h warp://localhost:9001 -n /rcl/rcl32 -l rcuMetrics
 ```
 
 ### Introspection APIs
@@ -150,19 +157,19 @@ Use the `swim:meta:host` agent to introspect a running host. Use the `pulse`
 lane to stream high level stats:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:host -l pulse
 ```
 
 The `nodes` lane enumerates all agents running on a host:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l nodes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:host -l nodes
 ```
 
 The fragment part of the `nodes` lane URI can contain a URI subpath filter:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l nodes#/
+swim-cli sync -h warp://localhost:9001 -n swim:meta:host -l nodes#/
 ```
 
 #### Node Introspection
@@ -170,19 +177,19 @@ swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l nodes#/
 You can stream the utilization of an individual web agent:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fOakland -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fFortWorth -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fWestColton -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fBailey -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fOakland -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fFortWorth -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fWestColton -l pulse
 ```
 
 And discover its lanes:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l lanes
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fOakland -l lanes
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fFortWorth -l lanes
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fWestColton -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fBailey -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fOakland -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fFortWorth -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fWestColton -l lanes
 ```
 
 Some additional examples:
@@ -190,34 +197,34 @@ Some additional examples:
 * Locomotive
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2frcl%2frcl17 -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2frcl%2frcl17 -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2frcl%2frcl17 -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2frcl%2frcl17 -l lanes
 ```
 
 * Introspection of details for Yards, Yard-Rails and Locomotive stored in CSV format
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyard-rails -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyard-rails -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2fyard-rails -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2fyard-rails -l lanes
 
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyards -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2fyards -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2fyards -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2fyards -l lanes
 
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2frcls -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fcsv%2frcls -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2frcls -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fcsv%2frcls -l lanes
 ```
 
 * Map coordinates
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fmap%2f84024,321683,19 -l pulse
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fmap%2f84024,321683,19 -l lanes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fmap%2f84024,321683,19 -l pulse
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fmap%2f84024,321683,19 -l lanes
 ```
 
 #### Mesh introspection
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:edge -l meshes
+swim-cli sync -h warp://localhost:9001 -n swim:meta:edge -l meshes
 ```
 
 #### Log introspection
@@ -225,11 +232,11 @@ swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:edge -l meshes
 You can stream log message for a particular web agent:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:node/%2fyard%2fBailey -l debugLog
+swim-cli sync -h warp://localhost:9001 -n swim:meta:node/%2fyard%2fBailey -l debugLog
 ```
 
 Or stream all log messages for a host:
 
 ```sh
-swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l debugLog
+swim-cli sync -h warp://localhost:9001 -n swim:meta:host -l debugLog
 ```
