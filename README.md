@@ -46,6 +46,24 @@ of this app running at [https://railroad.nstream-demo.io](https://railroad.nstre
 * [Install Node.js](https://nodejs.org/en/).
   * Confirm that [npm](https://www.npmjs.com/get-npm) was installed during the Node.js installation.
 
+## Repository Structure
+
+### Key files
+
+- [build.gradle](build.gradle) — backend project configuration script
+- [gradle.properties](gradle.properties) — backend project configuration variables
+- [package.json](ui/package.json) — frontend project configuration
+- [rollup.config.js](ui/rollup.config.js) — frontend bundle configuration script
+
+### Key directories
+
+- [src](src) — backend source code, and configuration resources
+  - [main/java](src/main/java) — backend source code
+  - [main/resources](src/main/resources) — backend configuration resources
+- [ui src](ui/src) — frontend source code
+- [gradle](gradle) — support files for the `gradlew` build script
+
+
 ## Run
 
 ### Running on Linux or MacOS
@@ -55,17 +73,13 @@ $ ./gradlew run
 ```
 
 ### Viewing the UI
-
 Open a web browser to [http://localhost:9001](http://localhost:9001).
 
 
 ## Streaming APIs
-
 The Swim runtime exposes its internal subsystems as a set of meta web agents.
 
 ### Application APIs
-
-#### Streaming APIs for top level Monitor
 
 1. **YARD**:
 
@@ -219,20 +233,3 @@ Or stream all log messages for a host:
 ```sh
 swim-cli sync -h warps://railroad.nstream-demo.io -n swim:meta:host -l debugLog
 ```
-
-## Repository Structure
-
-### Key files
-
-- [build.gradle](build.gradle) — backend project configuration script
-- [gradle.properties](gradle.properties) — backend project configuration variables
-- [package.json](ui/package.json) — frontend project configuration
-- [rollup.config.js](ui/rollup.config.js) — frontend bundle configuration script
-
-### Key directories
-
-- [src](src) — backend source code, and configuration resources
-  - [main/java](src/main/java) — backend source code
-  - [main/resources](src/main/resources) — backend configuration resources
-- [ui src](ui/src) — frontend source code
-- [gradle](gradle) — support files for the `gradlew` build script
