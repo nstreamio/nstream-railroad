@@ -30822,7 +30822,6 @@
       this.borderBottomRightRadius.setState(math.Length.pct(50), component.Affinity.Intrinsic);
       this.overflowX.setState("hidden", component.Affinity.Intrinsic);
       this.overflowY.setState("hidden", component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.cursor.setState("pointer", component.Affinity.Intrinsic);
     }
     setButtonType(buttonType) {
@@ -31084,7 +31083,6 @@
       this.width.setState(56, component.Affinity.Intrinsic);
       this.height.setState(56, component.Affinity.Intrinsic);
       this.opacity.setState(1, component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.cursor.setState("pointer", component.Affinity.Intrinsic);
     }
     initButton() {
@@ -31492,7 +31490,6 @@
       this.borderBottomRightRadius.setState(4, component.Affinity.Intrinsic);
       this.overflowX.setState("hidden", component.Affinity.Intrinsic);
       this.overflowY.setState("hidden", component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.cursor.setState("pointer", component.Affinity.Intrinsic);
     }
     initTheme() {
@@ -31822,7 +31819,6 @@
       this.position.setState("relative", component.Affinity.Intrinsic);
       this.height.setState(32, component.Affinity.Intrinsic);
       this.boxSizing.setState("content-box", component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.shape.insertView();
     }
     initShape(shapeView) {
@@ -37923,7 +37919,6 @@
     initButton() {
       this.addClass("deck-button");
       this.position.setState("relative", component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.cursor.setState("pointer", component.Affinity.Intrinsic);
     }
     get colorLook() {
@@ -38346,7 +38341,6 @@
       this.addClass("deck-bar");
       this.position.setState("relative", component.Affinity.Intrinsic);
       this.height.setState(this.barHeight.value, component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
       this.edgeInsets.setValue({
         insetTop: 0,
         insetRight: 0,

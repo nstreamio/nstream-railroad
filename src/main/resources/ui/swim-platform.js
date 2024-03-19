@@ -3406,7 +3406,6 @@
       this.overflowY.setState("hidden", component.Affinity.Intrinsic);
       this.backgroundColor.setLook(theme.Look.accentColor, component.Affinity.Intrinsic);
       this.pointerEvents.setState("auto", component.Affinity.Intrinsic);
-      this.userSelect.setState("none", component.Affinity.Intrinsic);
     }
     onMount() {
       super.onMount();
@@ -4324,7 +4323,6 @@
       rightPanelView.dismiss(false);
       rightPanelView.flexDirection("column");
       rightPanelView.top.setState(null);
-      rightPanelView.userSelect.setState("none", component.Affinity.Intrinsic);
       rightPanelView.placement("right");
       this.constraint(rightPanelView.top.constrain(), "eq", this.owner.beamHeight);
       this.constraint(rightPanelView.expandedWidth.constrain(), "eq", this.owner.drawerWidth);
@@ -4378,7 +4376,6 @@
       rightDrawerView.dismiss(false);
       rightDrawerView.flexDirection("column");
       rightDrawerView.top.setState(null);
-      rightDrawerView.userSelect.setState("none", component.Affinity.Intrinsic);
       rightDrawerView.placement("right");
       rightDrawerView.modifyTheme(theme.Feel.default, [ [ theme.Feel.raised, 1 ] ], false);
       rightDrawerView.backgroundColor.setLook(theme.Look.backgroundColor);
@@ -4811,7 +4808,7 @@
     observes: true,
     initView(rowView) {
       rowView.modifyMood(theme.Feel.default, [ [ theme.Feel.unselected, 1 ] ], false);
-      rowView.userSelect("none").hovers(true).rowHeight(48).layout(ShellController.leftListLayout);
+      rowView.hovers(true).rowHeight(48).layout(ShellController.leftListLayout);
       rowView.getOrCreateCell("icon", table.IconCellView).iconWidth(70, component.Affinity.Intrinsic).iconHeight(44, component.Affinity.Intrinsic).graphics(this.owner.brandIcon, component.Affinity.Intrinsic);
       const rootView = this.owner.root.view;
       rootView.constraint(rowView.rowHeight.constrain(), "eq", rootView.topBarHeight);
@@ -4827,7 +4824,7 @@
     type: table.TableView,
     initView(listView) {
       listView.modifyMood(theme.Feel.default, [ [ theme.Feel.unselected, 1 ] ], false);
-      listView.flexGrow(1).userSelect("none").backgroundColor(null).hovers(true).rowHeight(44).layout(ShellController.leftListLayout);
+      listView.flexGrow(1).backgroundColor(null).hovers(true).rowHeight(44).layout(ShellController.leftListLayout);
       const reflectorController = this.owner.reflector.controller;
       if (reflectorController !== null) {
         reflectorController.mirrorList.setView(listView);
@@ -4838,7 +4835,7 @@
     type: table.TableView,
     initView(listView) {
       listView.modifyMood(theme.Feel.default, [ [ theme.Feel.unselected, 1 ] ], false);
-      listView.flexGrow(0).userSelect("none").backgroundColor(null).hovers(true).rowHeight(44).layout(ShellController.leftListLayout);
+      listView.flexGrow(0).backgroundColor(null).hovers(true).rowHeight(44).layout(ShellController.leftListLayout);
       const collectorController = this.owner.collector.controller;
       if (collectorController !== null) {
         collectorController.domainList.setView(listView);
@@ -4849,7 +4846,7 @@
     type: table.RowView,
     initView(rowView) {
       rowView.modifyMood(theme.Feel.default, [ [ theme.Feel.unselected, 1 ] ], false);
-      rowView.userSelect("none").hovers(true).rowHeight(48).layout(ShellController.leftListLayout);
+      rowView.hovers(true).rowHeight(48).layout(ShellController.leftListLayout);
       rowView.getOrCreateCell("icon", table.IconCellView).iconWidth(20, component.Affinity.Intrinsic).iconHeight(20, component.Affinity.Intrinsic).graphics(this.owner.settingsIcon, component.Affinity.Intrinsic);
       rowView.getOrCreateCell("title", table.TextCellView).content("Settings");
     }
@@ -6783,7 +6780,7 @@
       return false;
     }
     initTree(treeView) {
-      treeView.marginLeft(8).marginRight(8).userSelect("none");
+      treeView.marginLeft(8).marginRight(8);
     }
   }
   __decorate([ controller.ControllerRef({
@@ -8718,7 +8715,6 @@
         this.owner.base.setView(mapView);
       }
       const controlContainer = dom.HtmlView.fromNode(containerView.node.querySelector(".mapboxgl-control-container"));
-      controlContainer.userSelect.setState("none", component.Affinity.Intrinsic);
     }
   }) ], AtlasMapbox.prototype, "container", void 0);
   __decorate([ view.ViewRef({
@@ -8864,7 +8860,7 @@
     type: table.TableView,
     initView(layerListView) {
       layerListView.modifyMood(theme.Feel.default, [ [ theme.Feel.transparent, 1 ], [ theme.Feel.unselected, 1 ] ], false);
-      layerListView.flexGrow(1).userSelect("none").backgroundColor(null).rowHeight(44).layout(AtlasLayers.layersListLayout);
+      layerListView.flexGrow(1).backgroundColor(null).rowHeight(44).layout(AtlasLayers.layersListLayout);
       const layer1 = layerListView.appendChild(table.RowView).backgroundColor(null);
       layer1.leaf.insertView().backgroundColor(null);
       layer1.getOrCreateCell("icon", table.IconCellView).iconWidth(24).iconHeight(24).graphics(this.owner.layersIcon);
@@ -9334,7 +9330,7 @@
     type: dom.HtmlView,
     binds: true,
     initView(masterBarView) {
-      masterBarView.position("absolute").display("flex").justifyContent("center").alignItems("center").top(0).left(0).userSelect("none").text("Lanes");
+      masterBarView.position("absolute").display("flex").justifyContent("center").alignItems("center").top(0).left(0).text("Lanes");
       this.owner.masterTree.constraint(masterBarView.width.constrain(), "eq", this.owner.masterWidth);
       this.owner.masterTree.constraint(masterBarView.height.constrain(), "eq", this.owner.barHeight);
     }
